@@ -1,6 +1,7 @@
 import { Router } from "express";
 import crypto from "crypto"
 import Razorpay from "razorpay";
+import Authenticator from "../authenticator";
 
 console.log("ROUTER")
 const PaymentRouter = Router()
@@ -9,7 +10,7 @@ PaymentRouter.get('/test', async (req, res) => {
     res.status(200).send("test")
 })
 
-PaymentRouter.get('/subscription/plans', async (req, res) => {
+PaymentRouter.get('/subscription/plans', Authenticator, async (req, res) => {
     try {
         var instance = new Razorpay({ key_id: process.env.RAZORPAY_APIKEY, key_secret: process.env.RAZORPAY_SECRETKEY })
         let plans = await instance.plans.all()
